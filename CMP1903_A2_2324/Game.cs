@@ -3,6 +3,20 @@ using System.Net;
 
 internal class Game
 {
+    private int _sevensOutPlayed;
+    public int SevensOutPlayed
+    {
+        get { return _sevensOutPlayed; }
+        set { _sevensOutPlayed = value; } 
+    }
+
+    private int _threeOrMorePlayed;
+    public int ThreeOrMorePlayed
+    {
+        get { return _threeOrMorePlayed; }
+        set { _threeOrMorePlayed = value; } 
+    }
+
     public int SevensOut(string player1, string player2)
     {
         int turnCounter = 0;
@@ -34,11 +48,13 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
                             if (player1Score > player2Score)
                             {
                                 Console.WriteLine($"{player1} is the winner; {player1Score}-{player2Score}.");
+                                SevensOutPlayed += 1; 
                                 return player1Score;
                             }
                             else
                             {
                                 Console.WriteLine($"{player2} is the winner; {player1Score}-{player2Score}.");
+                                SevensOutPlayed += 1; 
                                 return player2Score;
                             }
                         default:
@@ -65,11 +81,13 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
                             if (player1Score > player2Score)
                             {
                                 Console.WriteLine($"{player1} is the winner; {player1Score}-{player2Score}.");
+                                SevensOutPlayed += 1; 
                                 return player1Score;
                             }
                             else
                             {
                                 Console.WriteLine($"{player2} is the winner; {player1Score}-{player2Score}.");
+                                SevensOutPlayed += 1; 
                                 return player2Score;
                             }
                         default:
@@ -109,11 +127,13 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
                             if (player1Score > player2Score)
                             {
                                 Console.WriteLine($"{player1} is the winner; {player1Score}-{player2Score}.");
+                                SevensOutPlayed += 1;
                                 return player1Score;
                             }
                             else
                             {
                                 Console.WriteLine($"{player2} is the winner; {player1Score}-{player2Score}.");
+                                SevensOutPlayed +=1 ; 
                                 return player2Score;
                             }
                         default:
@@ -140,11 +160,13 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
                             if (player1Score > player2Score)
                             {
                                 Console.WriteLine($"{player1} is the winner; {player1Score}-{player2Score}.");
+                                SevensOutPlayed += 1;
                                 return player1Score;
                             }
                             else
                             {
                                 Console.WriteLine($"{player2} is the winner; {player1Score}-{player2Score}.");
+                                SevensOutPlayed += 1;
                                 return player2Score;
                             }
                         default:
@@ -278,8 +300,8 @@ Each player rolls five dice, looking for three of a kind or more, scoring points
                             switch (ThreeOrMoreCheck(rolls))
                             {
                                 case 2:
-                                    Console.WriteLine(@"You have rolled 2-of-a-kind; 
-press 1 to re-roll non-matching die, press 2 to re-roll all."); 
+                                    Console.WriteLine(@"
+                                    You have rolled 2-of-a-kind; press 1 to re-roll non-matching die, press 2 to re-roll all."); 
                                     string? userSelection = Console.ReadLine();
                                     if (userSelection == "1")
                                     {
@@ -321,25 +343,25 @@ press 1 to re-roll non-matching die, press 2 to re-roll all.");
                                     }
                                     continue; 
                                 case 3:
-                                    Console.WriteLine("3-1"); 
+                                    Console.WriteLine("You rolled three of a kind! Plus three points."); 
                                     player1Score += 3;
                                     threeOrMoreAchieved = true; 
                                     turnCounter++; 
                                     break;
                                 case 4:
-                                    Console.WriteLine("4-1"); 
+                                    Console.WriteLine("You rolled four-of-a-kind! Plus six points."); 
                                     player1Score += 6;
                                     threeOrMoreAchieved = true; 
                                     turnCounter++; 
                                     break;
                                 case 5:
-                                    Console.WriteLine("5-1"); 
+                                    Console.WriteLine("Full house! Plus twelve points."); 
                                     player1Score += 12;
                                     threeOrMoreAchieved = true; 
                                     turnCounter++; 
                                     break;
                                 default:
-                                    Console.WriteLine("1-1"); 
+                                    Console.WriteLine("One-of-a-kind. Re-rolling all dice."); 
                                     for (int i = 0; i < 5; i++)
                                     {
                                         die.Roll();
@@ -365,7 +387,8 @@ press 1 to re-roll non-matching die, press 2 to re-roll all.");
                             switch (ThreeOrMoreCheck(rolls))
                             {
                                 case 2:
-                                    Console.WriteLine("2-2"); 
+                                    Console.WriteLine(@"
+                                    You have rolled 2-of-a-kind; press 1 to re-roll non-matching die, press 2 to re-roll all.");  
                                     List<int> nonMatchingDice = rolls.GroupBy(x => x).Where(g => g.Count() < 2).SelectMany(g => g).ToList();
                                     List<int> matchingDice = rolls.GroupBy(x => x).Where(g => g.Count() >= 2).SelectMany(g => g).ToList();
 
@@ -390,25 +413,25 @@ press 1 to re-roll non-matching die, press 2 to re-roll all.");
                                     rolls.AddRange(newRolls);
                                     continue; 
                                 case 3:
-                                    Console.WriteLine("3-2"); 
+                                    Console.WriteLine("You rolled three-of-a-kind! Plus three points."); 
                                     player2Score += 3;
                                     threeOrMoreAchieved = true; 
                                     turnCounter--; 
                                     break;
                                 case 4:
-                                    Console.WriteLine("4-2"); 
+                                    Console.WriteLine("You rolled four-of-a-kind! Plus six points."); 
                                     player2Score += 6;
                                     threeOrMoreAchieved = true; 
                                     turnCounter--; 
                                     break;
                                 case 5:
-                                    Console.WriteLine("5-2"); 
+                                    Console.WriteLine("Full house! Plus twelve points.");
                                     player2Score += 12;
                                     threeOrMoreAchieved = true; 
                                     turnCounter--; 
                                     break;
                                 default:
-                                    Console.WriteLine("1-2"); 
+                                    Console.WriteLine("One-of-a-kind! Re-rolling all dice."); 
                                     for (int i = 0; i < 5; i++)
                                     {
                                         die.Roll();
@@ -519,12 +542,15 @@ press 1 to re-roll non-matching die, press 2 to re-roll all.");
         if (player1Score > player2Score)
         {
             Console.WriteLine($"{player1} wins! {player1Score}-{player2Score}.");
+            ThreeOrMorePlayed += 1;
             return player1Score;
         }
         else if (player2Score > player1Score)
         {
             Console.WriteLine($"{player2} wins! {player1Score}-{player2Score}.");
+            ThreeOrMorePlayed += 1;
             return player2Score;
+            
         }
         else
         {
@@ -548,7 +574,7 @@ press 1 to re-roll non-matching die, press 2 to re-roll all.");
 
         foreach (int set in setsRolled)
         {
-            if (set > highestSet);
+            if (set > highestSet)
             {
                 highestSet = set;
             }
