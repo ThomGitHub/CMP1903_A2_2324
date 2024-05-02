@@ -1,4 +1,6 @@
-﻿internal class Program
+﻿using System.Security.Cryptography.X509Certificates;
+
+internal class Program
 {
     private static void Main(string[] args)
     {
@@ -24,7 +26,7 @@
             {
                 Console.WriteLine(@"Please enter player 1's name.
 This should be four characters long and allows symbols, 'COMP' to play against a computer."); 
-                string? userInput = Console.ReadLine(); 
+                string userInput = Console.ReadLine()!; 
                 if (userInput.Length == 4)
                 {
                     player1 = userInput.ToUpper();
@@ -32,18 +34,19 @@ This should be four characters long and allows symbols, 'COMP' to play against a
                 else
                 {
                     Console.WriteLine(@"An invalid name selection has been made.
-                    Please ensure the name selected is four characters exactly, with no punctuation."); 
+Please ensure the name selected is four characters exactly, with no punctuation."); 
                     continue; 
                 }
 
                 Console.WriteLine(@"Please enter player 2's name.
 This should be four characters long and allows symbols, 'COMP' to play against a computer."); 
-                userInput = Console.ReadLine(); 
+                userInput = Console.ReadLine()!; 
                 if (userInput.Length == 4)
                 {
                     player2 = userInput.ToUpper();
                     SevensOut gameInstance = new();
-                    (score, winner) = gameInstance.GameFunctionality(player1, player2); 
+                    (score, winner) = gameInstance.GameFunctionality(player1, player2);
+                    Statistics.CalculateHighscore(score, winner, "SevensOut");
                 }
                 else
                 {
@@ -56,7 +59,7 @@ This should be four characters long and allows symbols, 'COMP' to play against a
             {
                 Console.WriteLine(@"Please enter player 1's name.
 This should be four characters long and allows, 'COMP' to play against a computer."); 
-                string? userInput = Console.ReadLine(); 
+                string? userInput = Console.ReadLine()!; 
                 if (userInput.Length == 4)
                 {
                     player1 = userInput.ToUpper();
@@ -70,12 +73,13 @@ This should be four characters long and allows, 'COMP' to play against a compute
 
                 Console.WriteLine(@"Please enter player 2's name.
 This should be four characters long and allows symbols, 'COMP' to play against a computer."); 
-                userInput = Console.ReadLine(); 
+                userInput = Console.ReadLine()!; 
                 if (userInput.Length == 4)
                 {
                     player2 = userInput.ToUpper();
                     ThreeOrMore gameInstance = new();
                     (score, winner) = gameInstance.GameFunctionality(player1, player2);
+                    Statistics.CalculateHighscore(score, winner, "ThreeOrMore");
                 }
                 else
                 {
@@ -86,7 +90,7 @@ This should be four characters long and allows symbols, 'COMP' to play against a
             }
             else if (userSelection == "3")
             {
-                break;
+                Statistics.PrintStatistics(); 
             }
             else if (userSelection == "4")
             {
