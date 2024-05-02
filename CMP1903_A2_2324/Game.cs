@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Net;
 
-internal class Game
+abstract class Game
 {
     private int _sevensOutPlayed;
     public int SevensOutPlayed
@@ -17,7 +17,19 @@ internal class Game
         set { _threeOrMorePlayed = value; } 
     }
 
-    public int SevensOut(string player1, string player2)
+    private int _fiveOfAKindsScored;
+    public int FiveOfAKindsScored
+    {
+        get { return _fiveOfAKindsScored; }
+        set { _fiveOfAKindsScored = value; }
+    }
+
+    public abstract (int? score, string? winner) GameFunctionality(string player1, string player2);
+} 
+
+internal class SevensOut : Game
+{
+    public override (int? score, string? winner) GameFunctionality(string player1, string player2)
     {
         int turnCounter = 0;
         List<int> player1Total = [];
@@ -49,13 +61,13 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
                             {
                                 Console.WriteLine($"{player1} is the winner; {player1Score}-{player2Score}.");
                                 SevensOutPlayed += 1; 
-                                return player1Score;
+                                return (player1Score, player1);
                             }
                             else
                             {
                                 Console.WriteLine($"{player2} is the winner; {player1Score}-{player2Score}.");
                                 SevensOutPlayed += 1; 
-                                return player2Score;
+                                return (player2Score, player2);
                             }
                         default:
                             Console.WriteLine($"The computer rolled a {total}.");
@@ -82,13 +94,13 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
                             {
                                 Console.WriteLine($"{player1} is the winner; {player1Score}-{player2Score}.");
                                 SevensOutPlayed += 1; 
-                                return player1Score;
+                                return (player1Score, player1);
                             }
                             else
                             {
                                 Console.WriteLine($"{player2} is the winner; {player1Score}-{player2Score}.");
                                 SevensOutPlayed += 1; 
-                                return player2Score;
+                                return (player2Score, player2);
                             }
                         default:
                             Console.WriteLine($"{player1} rolled a {total}.");
@@ -99,7 +111,7 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
                     }
                     else if (userInput == "E")
                     {
-                        return 0; 
+                        return (null, null); 
                     }
                     else
                     {
@@ -128,13 +140,13 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
                             {
                                 Console.WriteLine($"{player1} is the winner; {player1Score}-{player2Score}.");
                                 SevensOutPlayed += 1;
-                                return player1Score;
+                                return (player1Score, player1);
                             }
                             else
                             {
                                 Console.WriteLine($"{player2} is the winner; {player1Score}-{player2Score}.");
                                 SevensOutPlayed +=1 ; 
-                                return player2Score;
+                                return (player2Score, player2);
                             }
                         default:
                             Console.WriteLine($"The computer rolled a {total}.");
@@ -161,13 +173,13 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
                             {
                                 Console.WriteLine($"{player1} is the winner; {player1Score}-{player2Score}.");
                                 SevensOutPlayed += 1;
-                                return player1Score;
+                                return (player1Score, player1); 
                             }
                             else
                             {
                                 Console.WriteLine($"{player2} is the winner; {player1Score}-{player2Score}.");
                                 SevensOutPlayed += 1;
-                                return player2Score;
+                                return (player2Score, player2);
                             }
                         default:
                             Console.WriteLine($"{player2} rolled a {total}.");
@@ -178,7 +190,7 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
                     }
                     else if (userInput == "E")
                     {
-                        return 0;
+                        return (null, null);
                     }
                     else
                     {
@@ -190,8 +202,11 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
             }
         }
     }
+}
 
-    public int ThreeOrMore(string player1, string player2)
+internal class ThreeOrMore : Game
+{
+    public override (int? score, string? winner) GameFunctionality(string player1, string player2)
     {
         int turnCounter = 0;
         int player1Score = 0; 
@@ -289,7 +304,7 @@ Each player rolls five dice, looking for three of a kind or more, scoring points
                             }
                             else if (userInput == "E")
                             {
-                                return 0;
+                                return (null, null);
                             }
                             else
                             {
@@ -359,6 +374,7 @@ Each player rolls five dice, looking for three of a kind or more, scoring points
                                     player1Score += 12;
                                     threeOrMoreAchieved = true; 
                                     turnCounter++; 
+                                    FiveOfAKindsScored += 1;
                                     break;
                                 default:
                                     Console.WriteLine("One-of-a-kind. Re-rolling all dice."); 
@@ -428,6 +444,7 @@ Each player rolls five dice, looking for three of a kind or more, scoring points
                                     Console.WriteLine("Full house! Plus twelve points.");
                                     player2Score += 12;
                                     threeOrMoreAchieved = true; 
+                                    FiveOfAKindsScored += 1;
                                     turnCounter--; 
                                     break;
                                 default:
@@ -453,7 +470,7 @@ Each player rolls five dice, looking for three of a kind or more, scoring points
                             }
                             else if (userInput == "E")
                             {
-                                return 0;
+                                return (null, null);
                             }
                             else
                             {
@@ -543,19 +560,19 @@ press 1 to re-roll non-matching die, press 2 to re-roll all.");
         {
             Console.WriteLine($"{player1} wins! {player1Score}-{player2Score}.");
             ThreeOrMorePlayed += 1;
-            return player1Score;
+            return (player1Score, player1);
         }
         else if (player2Score > player1Score)
         {
             Console.WriteLine($"{player2} wins! {player1Score}-{player2Score}.");
             ThreeOrMorePlayed += 1;
-            return player2Score;
+            return (player2Score, player2);
             
         }
         else
         {
             Console.WriteLine($"A draw! {player1Score}-{player2Score}.");
-            return 0; 
+            return (null, null); 
         }
     }
 

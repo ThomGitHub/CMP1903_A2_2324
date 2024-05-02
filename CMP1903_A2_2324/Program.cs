@@ -2,7 +2,6 @@
 {
     private static void Main(string[] args)
     {
-        Game instanceGame = new();
         string player1; 
         string player2;
 
@@ -43,7 +42,8 @@ This should be four characters long and allows symbols, 'COMP' to play against a
                 if (userInput.Length == 4)
                 {
                     player2 = userInput.ToUpper();
-                    (score, winner) = instanceGame.ThreeOrMore(player1, player2);
+                    SevensOut gameInstance = new();
+                    (score, winner) = gameInstance.GameFunctionality(player1, player2); 
                 }
                 else
                 {
@@ -74,7 +74,8 @@ This should be four characters long and allows symbols, 'COMP' to play against a
                 if (userInput.Length == 4)
                 {
                     player2 = userInput.ToUpper();
-                    (score, winner) = instanceGame.ThreeOrMore(player1, player2);
+                    ThreeOrMore gameInstance = new();
+                    (score, winner) = gameInstance.GameFunctionality(player1, player2);
                 }
                 else
                 {
@@ -98,7 +99,7 @@ This should be four characters long and allows symbols, 'COMP' to play against a
             else
             {
                 Console.WriteLine(@"The only valid selections are '1', '2', '3' & '4'.
-                Please ensure you have not used any punctuation, or selected an invalid option.");
+Please ensure you have not used any punctuation, or selected an invalid option.");
                 continue; 
             }
         }
