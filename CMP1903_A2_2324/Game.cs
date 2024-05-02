@@ -503,7 +503,7 @@ Each player rolls five dice, looking for three of a kind or more, scoring points
         }
     }
 
-    private int ThreeOrMoreCheck(List<int> rolls)
+    public static int ThreeOrMoreCheck(List<int> rolls)
     {
         List<int> setsRolled = [];
         int setRolled; 

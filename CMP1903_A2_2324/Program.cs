@@ -9,7 +9,7 @@ internal class Program
 
         while (true)
         {
-            int? score = 0;
+            int? score;
             string? winner; 
 
             Console.WriteLine(@"Menu
@@ -94,7 +94,7 @@ This should be four characters long and allows symbols, 'COMP' to play against a
             }
             else if (userSelection == "4")
             {
-                break;
+                Testing.TestingMenu();
             }
             else if (userSelection == "5")
             {

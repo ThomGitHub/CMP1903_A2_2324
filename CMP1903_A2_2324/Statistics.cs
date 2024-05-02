@@ -9,18 +9,21 @@ internal class Statistics
         get { return _sevensOutHighScore; }
         set { _sevensOutHighScore = value; }
     }
+
     private static int _threeOrMoreHighscore;
     public static int ThreeOrMoreHighscore
     {
         get { return _threeOrMoreHighscore; }
         set { _threeOrMoreHighscore = value; }
     }
+
     private static string? _threeOrMoreHighscorer;
     public static string? ThreeOrMoreHighscorer
     {
         get { return _threeOrMoreHighscorer; }
         set { _threeOrMoreHighscorer = value; }
     }
+    
     private static string? _sevensOutHighscorer;
     public static string? SevensOutHighscorer
     {
