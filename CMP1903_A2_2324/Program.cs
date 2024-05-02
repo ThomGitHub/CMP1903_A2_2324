@@ -3,6 +3,6 @@
     private static void Main(string[] args)
     {
         Game instanceGame = new(); 
-        instanceGame.SevensOut("TEST", "COMP");
+        instanceGame.ThreeOrMore("WISE", "TEST"); 
     }
 }

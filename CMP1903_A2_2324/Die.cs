@@ -10,7 +10,6 @@ internal class Die
     public void Roll()
     {
         Random die = new(); 
-        int roll = die.Next(1, 7);
-        Value = roll;
+        Value = die.Next(1, 7);
     }
 }

@@ -177,36 +177,344 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
         List<int> rolls = []; 
         Die die = new(); 
 
-        while (player1Score >= 20 || player2Score >= 20)
+        Console.WriteLine(@"You have chosen to play Three Or More!
+Each player rolls five dice, looking for three of a kind or more, scoring points as they go.");
+
+        while (player1Score < 20 && player2Score < 20)
         {
-            if (turnCounter / 2.0 == 0)
+            rolls = [];
+            bool threeOrMoreAchieved = false;
+
+            while (threeOrMoreAchieved == false)
             {
-                Console.WriteLine($"It is {player1}'s turn!"); 
-                switch (player1)
+                if (turnCounter / 2.0 == 0)
                 {
-                    case "COMP":
+                    Console.WriteLine($"It is {player1}'s turn!"); 
+                    switch (player1)
+                    {
+                        case "COMP":
+                            for (int i = 0; i < 5; i++)
+                            {
+                                die.Roll();
+                                rolls.Add(die.Value);
+                            }
+
+                            switch (ThreeOrMoreCheck(rolls))
+                            {
+                                case 2:
+                                    Console.WriteLine("2-1"); 
+                                    List<int> nonMatchingDice = rolls.GroupBy(x => x).Where(g => g.Count() < 2).SelectMany(g => g).ToList();
+                                    List<int> matchingDice = rolls.GroupBy(x => x).Where(g => g.Count() >= 2).SelectMany(g => g).ToList();
+
+                                    if (matchingDice.Count >= 2)
+                                    {
+                                        rolls.RemoveAll(x => matchingDice.Contains(x));
+                                        for (int i = 0; i < 2; i++)
+                                        {
+                                            die.Roll();
+                                            rolls.Add(die.Value);
+                                        }
+                                    }
+
+                                    List<int> newRolls = [];
+                                    for (int i = 0; i < nonMatchingDice.Count; i++)
+                                    {
+                                        die.Roll();
+                                        newRolls.Add(die.Value);
+                                    }
+
+                                    rolls.RemoveAll(x => nonMatchingDice.Contains(x));
+                                    rolls.AddRange(newRolls);
+                                    continue; 
+                                case 3:
+                                    Console.WriteLine("3-1"); 
+                                    player1Score += 3;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter++; 
+                                    break;
+                                case 4:
+                                    Console.WriteLine("4-1"); 
+                                    player1Score += 6;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter++; 
+                                    break;
+                                case 5:
+                                    Console.WriteLine("5-1"); 
+                                    player1Score += 12;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter++; 
+                                    break;
+                                default:
+                                    Console.WriteLine("1-1"); 
+                                    for (int i = 0; i < 5; i++)
+                                    {
+                                        die.Roll();
+                                        rolls.Add(die.Value);
+                                    }
+                                    continue;
+                            }
+                            break; 
+                        default: 
+                            Console.WriteLine("Continue? R to roll the dice, E to exit.");
+                            string? userInput = Console.ReadLine();
+                            if (userInput == "R")
+                            {
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    die.Roll();
+                                    rolls.Add(die.Value);
+                                }
+                            }
+                            else if (userInput == "E")
+                            {
+                                return 0;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid selection! The options are 'R' and 'E'."); 
+                                continue; 
+                            }
+
+                            switch (ThreeOrMoreCheck(rolls))
+                            {
+                                case 2:
+                                    Console.WriteLine(@"You have rolled 2-of-a-kind; 
+press 1 to re-roll non-matching die, press 2 to re-roll all."); 
+                                    string? userSelection = Console.ReadLine();
+                                    if (userSelection == "1")
+                                    {
+                                        List<int> nonMatchingDice = rolls.GroupBy(x => x).Where(g => g.Count() < 2).SelectMany(g => g).ToList();
+                                        List<int> matchingDice = rolls.GroupBy(x => x).Where(g => g.Count() >= 2).SelectMany(g => g).ToList();
+
+                                        if (matchingDice.Count >= 2)
+                                        {
+                                            rolls.RemoveAll(x => matchingDice.Contains(x));
+                                            for (int i = 0; i < 2; i++)
+                                            {
+                                                die.Roll();
+                                                rolls.Add(die.Value);
+                                            }
+                                        }
+
+                                        List<int> newRolls = [];
+                                        for (int i = 0; i < nonMatchingDice.Count; i++)
+                                        {
+                                            die.Roll();
+                                            newRolls.Add(die.Value);
+                                        }
+
+                                        rolls.RemoveAll(x => nonMatchingDice.Contains(x));
+                                        rolls.AddRange(newRolls);
+                                    }
+                                    else if (userSelection == "2")
+                                    {
+                                        for (int i = 0; i < 5; i++)
+                                        {
+                                        die.Roll();
+                                        rolls.Add(die.Value);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Invalid selection or no. Skipping turn.");
+                                        turnCounter++;
+                                    }
+                                    continue; 
+                                case 3:
+                                    Console.WriteLine("3-1"); 
+                                    player1Score += 3;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter++; 
+                                    break;
+                                case 4:
+                                    Console.WriteLine("4-1"); 
+                                    player1Score += 6;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter++; 
+                                    break;
+                                case 5:
+                                    Console.WriteLine("5-1"); 
+                                    player1Score += 12;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter++; 
+                                    break;
+                                default:
+                                    Console.WriteLine("1-1"); 
+                                    for (int i = 0; i < 5; i++)
+                                    {
+                                        die.Roll();
+                                        rolls.Add(die.Value);
+                                    }
+                                    continue;
+                            }
+                            break; 
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"It is {player2}'s turn!"); 
+                    switch (player2)
+                    {
+                        case "COMP": 
                         for (int i = 0; i < 5; i++)
-                        {
-                            die.Roll();
-                            rolls.Add(die.Value); 
+                            {
+                                die.Roll();
+                                rolls.Add(die.Value);
+                            }
+
+                            switch (ThreeOrMoreCheck(rolls))
+                            {
+                                case 2:
+                                    Console.WriteLine("2-2"); 
+                                    List<int> nonMatchingDice = rolls.GroupBy(x => x).Where(g => g.Count() < 2).SelectMany(g => g).ToList();
+                                    List<int> matchingDice = rolls.GroupBy(x => x).Where(g => g.Count() >= 2).SelectMany(g => g).ToList();
+
+                                    if (matchingDice.Count >= 2)
+                                    {
+                                        rolls.RemoveAll(x => matchingDice.Contains(x));
+                                        for (int i = 0; i < 2; i++)
+                                        {
+                                            die.Roll();
+                                            rolls.Add(die.Value);
+                                        }
+                                    }
+
+                                    List<int> newRolls = [];
+                                    for (int i = 0; i < nonMatchingDice.Count; i++)
+                                    {
+                                        die.Roll();
+                                        newRolls.Add(die.Value);
+                                    }
+
+                                    rolls.RemoveAll(x => nonMatchingDice.Contains(x));
+                                    rolls.AddRange(newRolls);
+                                    continue; 
+                                case 3:
+                                    Console.WriteLine("3-2"); 
+                                    player2Score += 3;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter--; 
+                                    break;
+                                case 4:
+                                    Console.WriteLine("4-2"); 
+                                    player2Score += 6;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter--; 
+                                    break;
+                                case 5:
+                                    Console.WriteLine("5-2"); 
+                                    player2Score += 12;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter--; 
+                                    break;
+                                default:
+                                    Console.WriteLine("1-2"); 
+                                    for (int i = 0; i < 5; i++)
+                                    {
+                                        die.Roll();
+                                        rolls.Add(die.Value);
+                                    }
+                                    continue;
+                            }
+                            break;   
+                        default:
+                            Console.WriteLine("Continue? R to roll the dice, E to exit.");
+                            string? userInput = Console.ReadLine();
+                            if (userInput == "R")
+                            {
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    die.Roll();
+                                    rolls.Add(die.Value);
+                                }
+                            }
+                            else if (userInput == "E")
+                            {
+                                return 0;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid selection! The options are 'R' and 'E'."); 
+                                continue; 
+                            }
+
+                            switch (ThreeOrMoreCheck(rolls))
+                            {
+                                case 2:
+                                    Console.WriteLine(@"You have rolled 2-of-a-kind; 
+press 1 to re-roll non-matching die, press 2 to re-roll all."); 
+                                    string? userSelection = Console.ReadLine();
+                                    if (userSelection == "1")
+                                    {
+                                        List<int> nonMatchingDice = rolls.GroupBy(x => x).Where(g => g.Count() < 2).SelectMany(g => g).ToList();
+                                        List<int> matchingDice = rolls.GroupBy(x => x).Where(g => g.Count() >= 2).SelectMany(g => g).ToList();
+
+                                        if (matchingDice.Count >= 2)
+                                        {
+                                            rolls.RemoveAll(x => matchingDice.Contains(x));
+                                            for (int i = 0; i < 2; i++)
+                                            {
+                                                die.Roll();
+                                                rolls.Add(die.Value);
+                                            }
+                                        }
+
+                                        List<int> newRolls = [];
+                                        for (int i = 0; i < nonMatchingDice.Count; i++)
+                                        {
+                                            die.Roll();
+                                            newRolls.Add(die.Value);
+                                        }
+
+                                        rolls.RemoveAll(x => nonMatchingDice.Contains(x));
+                                        rolls.AddRange(newRolls);
+                                    }
+                                    else if (userSelection == "2")
+                                    {
+                                        for (int i = 0; i < 5; i++)
+                                        {
+                                        die.Roll();
+                                        rolls.Add(die.Value);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Invalid selection or no. Skipping turn.");
+                                        turnCounter--;
+                                    }
+                                    continue; 
+                                case 3:
+                                    Console.WriteLine("3-2"); 
+                                    player2Score += 3;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter--; 
+                                    break;
+                                case 4:
+                                    Console.WriteLine("4-2"); 
+                                    player2Score += 6;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter--; 
+                                    break;
+                                case 5:
+                                    Console.WriteLine("5-2"); 
+                                    player2Score += 12;
+                                    threeOrMoreAchieved = true; 
+                                    turnCounter--; 
+                                    break;
+                                default:
+                                    Console.WriteLine("1-2"); 
+                                    for (int i = 0; i < 5; i++)
+                                    {
+                                        die.Roll();
+                                        rolls.Add(die.Value);
+                                    }
+                                    continue;
+                            }
+                            break;
                         }
-                        break; 
-                    default: 
-                        break; 
+                    }
                 }
             }
-            else
-            {
-                Console.WriteLine($"It is {player2}'s turn!"); 
-                switch (player2)
-                {
-                    case "COMP":
-                        break; 
-                    default:
-                        break; 
-                }
-            }
-        }
 
         if (player1Score > player2Score)
         {
@@ -223,5 +531,29 @@ Each player rolls two dice, adding up their totals, until one rolls seven.");
             Console.WriteLine($"A draw! {player1Score}-{player2Score}.");
             return 0; 
         }
+    }
+
+    private int ThreeOrMoreCheck(List<int> rolls)
+    {
+        List<int> setsRolled = [];
+        int setRolled; 
+
+        foreach (int roll in rolls)
+        {
+            setRolled = rolls.Count(x => x == roll);
+            setsRolled.Add(setRolled); 
+        }
+
+        int highestSet = setsRolled[0]; 
+
+        foreach (int set in setsRolled)
+        {
+            if (set > highestSet);
+            {
+                highestSet = set;
+            }
+        }
+
+        return highestSet; 
     }
 }
